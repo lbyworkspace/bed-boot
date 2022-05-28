@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+<div>
+    <form class="form">
+        <h3>网络图床系统</h3>
+        <div>
+            <label for="account">账号</label>
+            <input id="account" type="text" placeholder="请输入账号">
+        </div>
+        <div>
+            <label for="password">密码</label>
+            <input id="password" type="password" placeholder="请输入密码">
+        </div>
+        <div>
+            <button id="register" type="button">注册</button>
+            <button id="login" type="button">登录</button>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(()=>{
+        //点击登录按钮时触发
+        $('#login').click(()=>{
+            var account = $('#account').val()
+            var password = $('#password').val()
+            //请求登录接口
+            $.ajax({
+                url:`http://localhost:9000/user/login?account=${account}&password=${password}`,
+                method:'POST',
+                success:(res)=>{
+                    //登录成功后跳转首页
+                    window.alert(res)
+                    window.location.href = "http://localhost:9000/home";
+                },
+                error:err=>{
+                    window.alert(err.responseText)
+                    $('#account').val("")
+                    $('#password').val("")
+                }
+            })
+        })
+
+        $('#register').click(()=>{
+            //点击注册跳转到注册页面
+            window.location.href = 'http://localhost:9000/register'
+        })
+    })
+</script>
+</body>
+</html>

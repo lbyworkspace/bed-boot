@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+<form class="form">
+    <h3>网络图床系统</h3>
+    <div>
+        <input id="account" type="text" placeholder="请输入新账号">
+    </div>
+    <div>
+        <input id="password1" type="text" placeholder="请输入新密码">
+    </div>
+    <div>
+        <input id="password2" type="text" placeholder="再次输入密码">
+    </div>
+    <div>
+        <button id="back" type="button">返回</button>
+        <button id="register" type="button">注册</button>
+    </div>
+</form>
+<script>
+    $(document).ready(()=>{
+        $('#back').click(()=>{
+            window.history.back(-1)
+        })
+
+        $('#register').click(()=>{
+            var account = $('#account').val()
+            var password1 = $('#password1').val()
+            var password2 = $('#password2').val()
+            if (password1!=password2) {
+                window.alert("两次密码不一致，请重新填写")
+                return
+            }
+            //请求注册接口
+            $.ajax({
+                url:`http://localhost:9000/user/register?account=${account}&password=${password1}`,
+                method:'POST',
+                success:(res)=>{
+                    //注册成功后跳转首页登录
+                    window.alert(res)
+                    window.location.href = "http://localhost:9000"
+                },
+                error:err=>{
+                    //如果请求接口失败会提示错误信息，并把输入框的内容置空
+                    window.alert(err.responseText)
+                    $('#account').val("")
+                    $('#password1').val("")
+                    $('#password2').val("")
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>
